@@ -1,2 +1,3 @@
 .vscode/
-logs.txt
+*.log
+__debug_bin

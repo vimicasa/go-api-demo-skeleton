@@ -1,12 +1,13 @@
 package middleware
 
 import (
-	"go-api-demo-skeleton/app"
-	"go-api-demo-skeleton/app/auth"
-	"go-api-demo-skeleton/app/model"
-	"go-api-demo-skeleton/app/util"
 	"net/http"
 	"strings"
+
+	"github.com/vimicasa/go-api-demo-skeleton/app"
+	"github.com/vimicasa/go-api-demo-skeleton/app/auth"
+	"github.com/vimicasa/go-api-demo-skeleton/app/model"
+	"github.com/vimicasa/go-api-demo-skeleton/app/util"
 
 	"github.com/gin-gonic/gin"
 )

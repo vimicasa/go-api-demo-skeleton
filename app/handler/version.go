@@ -1,8 +1,9 @@
 package handler
 
 import (
-	"go-api-demo-skeleton/app"
 	"net/http"
+
+	"github.com/vimicasa/go-api-demo-skeleton/app"
 
 	"github.com/gin-gonic/gin"
 )

@@ -4,12 +4,13 @@ import (
 	"crypto/tls"
 	"encoding/base64"
 	"errors"
-	"go-api-demo-skeleton/app"
-	h "go-api-demo-skeleton/app/handler"
-	"go-api-demo-skeleton/app/router/middleware"
 	"net/http"
 	"os"
 	"regexp"
+
+	"github.com/vimicasa/go-api-demo-skeleton/app"
+	h "github.com/vimicasa/go-api-demo-skeleton/app/handler"
+	"github.com/vimicasa/go-api-demo-skeleton/app/router/middleware"
 
 	"github.com/gin-contrib/logger"
 	"github.com/gin-gonic/gin"

@@ -1,4 +1,4 @@
-module go-api-demo-skeleton
+module github.com/vimicasa/go-api-demo-skeleton
 
 go 1.13
 

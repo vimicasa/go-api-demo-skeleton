@@ -3,11 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
-	"go-api-demo-skeleton/app"
-	"go-api-demo-skeleton/app/router"
-	"go-api-demo-skeleton/config"
 	"log"
 	"os"
+
+	"github.com/vimicasa/go-api-demo-skeleton/app"
+	"github.com/vimicasa/go-api-demo-skeleton/app/router"
+	"github.com/vimicasa/go-api-demo-skeleton/config"
 )
 
 func main() {

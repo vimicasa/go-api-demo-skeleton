@@ -1,10 +1,11 @@
 package handler
 
 import (
-	"go-api-demo-skeleton/app"
-	"go-api-demo-skeleton/app/auth"
-	"go-api-demo-skeleton/app/model"
 	"net/http"
+
+	"github.com/vimicasa/go-api-demo-skeleton/app"
+	"github.com/vimicasa/go-api-demo-skeleton/app/auth"
+	"github.com/vimicasa/go-api-demo-skeletonn/app/model"
 
 	"github.com/gin-gonic/gin"
 )

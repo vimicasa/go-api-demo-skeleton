@@ -1,7 +1,7 @@
 package app
 
 import (
-	"go-api-demo-skeleton/config"
+	"github.com/vimicasa/go-api-demo-skeleton/config"
 
 	"github.com/sirupsen/logrus"
 )

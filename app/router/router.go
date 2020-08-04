@@ -140,12 +140,11 @@ func routerEngine() *gin.Engine {
 	r.GET("/version", h.VersionHandler)
 	r.GET("/", rootHandler)
 
-	return r
+	r.POST("/login", h.LoginHandler)
+	// r.POST("/refresh", h.RefreshHandler)
+	// r.POST("/logout" /*middlewares.TokenAuthMiddleware(),*/, h.LogoutHandler)
 
-	// // 404 Handler.
-	// g.NoRoute(func(c *gin.Context) {
-	// 	r.NotFoundResponse(c)
-	// })
+	return r
 }
 
 func rootHandler(c *gin.Context) {

@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// HeartbeatHandler health check endpoint
-func HeartbeatHandler(c *gin.Context) {
+// LogoutHandler logout function
+func LogoutHandler(c *gin.Context) {
 	c.AbortWithStatus(http.StatusOK)
 }

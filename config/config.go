@@ -10,6 +10,7 @@ import (
 )
 
 const (
+	// TODO: change this value
 	// NameApp of the application
 	NameApp = "test"
 )

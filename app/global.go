@@ -14,3 +14,10 @@ var (
 	// LogError is log server error log
 	LogError *logrus.Logger
 )
+
+// Response generic response of the app
+type Response struct {
+	Status      int         `json:"status"`
+	Description string      `json:"description,omitempty"`
+	Data        interface{} `json:"data,omitempty"`
+}

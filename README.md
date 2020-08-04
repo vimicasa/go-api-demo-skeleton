@@ -11,12 +11,24 @@ This is the repo to track my golang learning steps.
     - / -> dummy response
     - /version 
     - /healthz
+    - Authenticated Endpoints (by Groups):
+        - /read
+        - /basic
+        - /admin
+    
+
 
 * Middleware
     - Header (NoCache, Options, Security)
     - RequestId
+    - Authentication
 
 * Global logging
+
+* Hard coded Users
+    - admin/admin (Role Admin)
+    - basic/basic (Role Basic)
+    - read/read (Role Read)
 
 
 

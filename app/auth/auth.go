@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -54,4 +55,31 @@ func CreateToken(userId string) (*TokenDetails, error) {
 		return nil, err
 	}
 	return td, nil
+}
+
+// VerifyToken check validity of token
+
+func GetValidToken(tokenStr string) (jwt.MapClaims, error) {
+	token, err := verifyToken(tokenStr)
+	if err != nil {
+		return nil, err
+	}
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok && !token.Valid {
+		return nil, err
+	}
+	return claims, nil
+}
+
+func verifyToken(tokenStr string) (*jwt.Token, error) {
+	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte("ACCESS_SECRET"), nil // TODO: change this value. os.Getenv("REFRESH_SECRET")
+	})
+	if err != nil {
+		return nil, err
+	}
+	return token, nil
 }

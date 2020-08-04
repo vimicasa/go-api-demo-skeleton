@@ -134,21 +134,46 @@ func routerEngine() *gin.Engine {
 		c.AbortWithStatus(http.StatusNotFound)
 	})
 
-	r.GET(app.AppConf.API.HealthURI, h.HeartbeatHandler)
-	r.HEAD(app.AppConf.API.HealthURI, h.HeartbeatHandler)
+	api := r.Group("/")
+	// no authentication endpoints
+	{
+		api.GET(app.AppConf.API.HealthURI, h.HeartbeatHandler)
+		api.HEAD(app.AppConf.API.HealthURI, h.HeartbeatHandler)
+		api.GET("/version", h.VersionHandler)
 
-	r.GET("/version", h.VersionHandler)
-	r.GET("/", rootHandler)
-
-	r.POST("/login", h.LoginHandler)
-	// r.POST("/refresh", h.RefreshHandler)
-	// r.POST("/logout" /*middlewares.TokenAuthMiddleware(),*/, h.LogoutHandler)
+		api.POST("/login", h.LoginHandler)
+		api.GET("/", rootHandler)
+	}
+	// basic authentication endpoints
+	readAuth := r.Group("/")
+	{
+		readAuth.Use(middleware.AuthenticationRequired())
+		{
+			readAuth.GET("/read", h.LogoutHandler)
+		}
+	}
+	// admin authentication endpoints
+	basicAuth := r.Group("/")
+	{
+		basicAuth.Use(middleware.AuthenticationRequired("admin", "basic"))
+		{
+			basicAuth.GET("/basic", rootHandler)
+		}
+	}
+	// admin authentication endpoints
+	adminAuth := r.Group("/")
+	{
+		adminAuth.Use(middleware.AuthenticationRequired("admin"))
+		{
+			adminAuth.GET("/admin", rootHandler)
+		}
+	}
 
 	return r
 }
 
 func rootHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"text": "Welcome to notification server.",
+		"text": "Welcome Root Handler:" + c.Request.URL.Path,
 	})
 }

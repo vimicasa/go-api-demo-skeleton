@@ -3,9 +3,9 @@ package middleware
 import (
 	"time"
 
-	"github.com/bb-server/app"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
+	"github.com/vimicasa/go-api-demo-skeleton/app"
 )
 
 // Logger is the logrus logger handler

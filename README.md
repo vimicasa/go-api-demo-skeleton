@@ -30,5 +30,16 @@ This is the repo to track my golang learning steps.
     - basic/basic (Role Basic)
     - read/read (Role Read)
 
+# Docker
+
+* Build image
+```
+docker build -t my-api .
+```
+
+* Execute
+```
+docker run -p8088:8088 my-api
+```
 
 

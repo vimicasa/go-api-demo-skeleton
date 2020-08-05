@@ -32,18 +32,18 @@ func InitLog() error {
 
 	// init logger
 	LogAccess = logrus.New()
-	LogError = logrus.New()
+	LogServer = logrus.New()
 
 	if !IsTerm {
 		LogAccess.SetFormatter(&logrus.JSONFormatter{})
-		LogError.SetFormatter(&logrus.JSONFormatter{})
+		LogServer.SetFormatter(&logrus.JSONFormatter{})
 	} else {
 		LogAccess.Formatter = &logrus.TextFormatter{
 			TimestampFormat: "2006/01/02 - 15:04:05",
 			FullTimestamp:   true,
 		}
 
-		LogError.Formatter = &logrus.TextFormatter{
+		LogServer.Formatter = &logrus.TextFormatter{
 			TimestampFormat: "2006/01/02 - 15:04:05",
 			FullTimestamp:   true,
 		}
@@ -54,7 +54,7 @@ func InitLog() error {
 		return errors.New("Set access log level error: " + err.Error())
 	}
 
-	if err = SetLogLevel(LogError, AppConf.Log.ErrorLevel); err != nil {
+	if err = SetLogLevel(LogServer, AppConf.Log.ServerLevel); err != nil {
 		return errors.New("Set error log level error: " + err.Error())
 	}
 
@@ -62,7 +62,7 @@ func InitLog() error {
 		return errors.New("Set access log path error: " + err.Error())
 	}
 
-	if err = SetLogOut(LogError, AppConf.Log.ErrorLog); err != nil {
+	if err = SetLogOut(LogServer, AppConf.Log.ServerLog); err != nil {
 		return errors.New("Set error log path error: " + err.Error())
 	}
 

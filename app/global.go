@@ -11,8 +11,8 @@ var (
 	AppConf config.ConfYaml
 	// LogAccess is log server request log
 	LogAccess *logrus.Logger
-	// LogError is log server error log
-	LogError *logrus.Logger
+	// LogServer is log server error log
+	LogServer *logrus.Logger
 )
 
 // Response generic response of the app

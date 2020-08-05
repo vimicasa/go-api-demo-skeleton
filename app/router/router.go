@@ -5,17 +5,13 @@ import (
 	"encoding/base64"
 	"errors"
 	"net/http"
-	"os"
 	"regexp"
 
 	"github.com/vimicasa/go-api-demo-skeleton/app"
 	h "github.com/vimicasa/go-api-demo-skeleton/app/handler"
 	"github.com/vimicasa/go-api-demo-skeleton/app/router/middleware"
 
-	"github.com/gin-contrib/logger"
 	"github.com/gin-gonic/gin"
-	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 	"golang.org/x/crypto/acme/autocert"
 )
 
@@ -31,7 +27,7 @@ func RunHTTPServer() (err error) {
 		Handler: routerEngine(),
 	}
 
-	app.LogAccess.Info("HTTPD server is running on " + app.AppConf.Core.Port + " port.")
+	app.LogServer.Info("HTTPD server is running on " + app.AppConf.Core.Port + " port.")
 	if app.AppConf.Core.AutoTLS.Enabled {
 		return startServer(autoTLSServer())
 	} else if app.AppConf.Core.SSL {
@@ -47,22 +43,22 @@ func RunHTTPServer() (err error) {
 		if app.AppConf.Core.CertPath != "" && app.AppConf.Core.KeyPath != "" {
 			config.Certificates[0], err = tls.LoadX509KeyPair(app.AppConf.Core.CertPath, app.AppConf.Core.KeyPath)
 			if err != nil {
-				app.LogError.Error("Failed to load https cert file: ", err)
+				app.LogServer.Error("Failed to load https cert file: ", err)
 				return err
 			}
 		} else if app.AppConf.Core.CertBase64 != "" && app.AppConf.Core.KeyBase64 != "" {
 			cert, err := base64.StdEncoding.DecodeString(app.AppConf.Core.CertBase64)
 			if err != nil {
-				app.LogError.Error("base64 decode error:", err.Error())
+				app.LogServer.Error("base64 decode error:", err.Error())
 				return err
 			}
 			key, err := base64.StdEncoding.DecodeString(app.AppConf.Core.KeyBase64)
 			if err != nil {
-				app.LogError.Error("base64 decode error:", err.Error())
+				app.LogServer.Error("base64 decode error:", err.Error())
 				return err
 			}
 			if config.Certificates[0], err = tls.X509KeyPair(cert, key); err != nil {
-				app.LogError.Error("tls key pair error:", err.Error())
+				app.LogServer.Error("tls key pair error:", err.Error())
 				return err
 			}
 		} else {
@@ -73,47 +69,9 @@ func RunHTTPServer() (err error) {
 	}
 
 	return startServer(server)
-
-}
-
-func autoTLSServer() *http.Server {
-	m := autocert.Manager{
-		Prompt:     autocert.AcceptTOS,
-		HostPolicy: autocert.HostWhitelist(app.AppConf.Core.AutoTLS.Host),
-		Cache:      autocert.DirCache(app.AppConf.Core.AutoTLS.Folder),
-	}
-
-	return &http.Server{
-		Addr:      ":https",
-		TLSConfig: &tls.Config{GetCertificate: m.GetCertificate},
-		Handler:   routerEngine(),
-	}
-}
-
-func startServer(s *http.Server) error {
-	if s.TLSConfig == nil {
-		return s.ListenAndServe()
-	}
-
-	return s.ListenAndServeTLS("", "")
 }
 
 func routerEngine() *gin.Engine {
-	zerolog.SetGlobalLevel(zerolog.InfoLevel)
-	if app.AppConf.Core.Mode == "debug" {
-		zerolog.SetGlobalLevel(zerolog.DebugLevel)
-	}
-
-	log.Logger = zerolog.New(os.Stdout).With().Timestamp().Logger()
-
-	if app.IsTerm {
-		log.Logger = log.Output(
-			zerolog.ConsoleWriter{
-				Out:     os.Stdout,
-				NoColor: false,
-			},
-		)
-	}
 
 	// set server mode
 	gin.SetMode(app.AppConf.Core.Mode)
@@ -121,10 +79,7 @@ func routerEngine() *gin.Engine {
 	r := gin.New()
 
 	// Global middleware
-	r.Use(logger.SetLogger(logger.Config{
-		UTC:            true,
-		SkipPathRegexp: rxURL,
-	}))
+	r.Use(middleware.Logger())
 	r.Use(gin.Recovery())
 	r.Use(middleware.NoCache)
 	r.Use(middleware.Options)
@@ -171,6 +126,28 @@ func routerEngine() *gin.Engine {
 	}
 
 	return r
+}
+
+func autoTLSServer() *http.Server {
+	m := autocert.Manager{
+		Prompt:     autocert.AcceptTOS,
+		HostPolicy: autocert.HostWhitelist(app.AppConf.Core.AutoTLS.Host),
+		Cache:      autocert.DirCache(app.AppConf.Core.AutoTLS.Folder),
+	}
+
+	return &http.Server{
+		Addr:      ":https",
+		TLSConfig: &tls.Config{GetCertificate: m.GetCertificate},
+		Handler:   routerEngine(),
+	}
+}
+
+func startServer(s *http.Server) error {
+	if s.TLSConfig == nil {
+		return s.ListenAndServe()
+	}
+
+	return s.ListenAndServeTLS("", "")
 }
 
 func rootHandler(c *gin.Context) {

@@ -10,9 +10,8 @@ import (
 )
 
 const (
-	// TODO: change this value
 	// NameApp of the application
-	NameApp = "test"
+	NameApp = "Test"
 )
 
 var defaultConf = []byte(`
@@ -37,8 +36,8 @@ log:
   format: "string" # string or json
   access_log: "access.log" # stdout: output to console, or define log path like "log/access_log"
   access_level: "debug"
-  error_log: "error.log" # stderr: output to console, or define log path like "log/error_log"
-  error_level: "error"
+  server_log: "server.log" # stderr: output to console, or define log path like "log/server_log"
+  server_level: "info"
 
 `)
 
@@ -67,8 +66,8 @@ type SectionLog struct {
 	Format      string `yaml:"format"`
 	AccessLog   string `yaml:"access_log"`
 	AccessLevel string `yaml:"access_level"`
-	ErrorLog    string `yaml:"error_log"`
-	ErrorLevel  string `yaml:"error_level"`
+	ServerLog   string `yaml:"server_log"`
+	ServerLevel string `yaml:"server_level"`
 }
 
 // SectionAutoTLS support Let's Encrypt setting.
@@ -140,8 +139,8 @@ func LoadConf(confPath string) (ConfYaml, error) {
 	conf.Log.Format = viper.GetString("log.format")
 	conf.Log.AccessLog = viper.GetString("log.access_log")
 	conf.Log.AccessLevel = viper.GetString("log.access_level")
-	conf.Log.ErrorLog = viper.GetString("log.error_log")
-	conf.Log.ErrorLevel = viper.GetString("log.error_level")
+	conf.Log.ServerLog = viper.GetString("log.server_log")
+	conf.Log.ServerLevel = viper.GetString("log.server_level")
 
 	return conf, nil
 }

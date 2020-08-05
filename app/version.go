@@ -3,6 +3,8 @@ package app
 import (
 	"fmt"
 	"runtime"
+
+	"github.com/vimicasa/go-api-demo-skeleton/config"
 )
 
 var version string
@@ -19,7 +21,8 @@ func GetVersion() string {
 
 // PrintVersion provide print server engine
 func PrintVersion() {
-	fmt.Printf(`App %s, Compiler: %s %s, Copyright (C) 2020 Vimicasa.`,
+	fmt.Printf(`%s %s, Compiler: %s %s, Copyright (C) 2020 Vimicasa.`,
+		config.NameApp,
 		version,
 		runtime.Compiler,
 		runtime.Version())

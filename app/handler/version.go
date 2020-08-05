@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/vimicasa/go-api-demo-skeleton/app"
+	"github.com/vimicasa/go-api-demo-skeleton/config"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,7 +12,7 @@ import (
 // VersionHandler to retrieve version
 func VersionHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"source":  "Test",
+		"name":    config.NameApp,
 		"version": app.GetVersion(),
 	})
 }
